@@ -1,14 +1,11 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
-import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 
 export default function Owner({ navigation }){
     const image =require("../assets/bgf.png");
     return(
         <ImageBackground source={image} style={styles.container}>
-          <View style={styles.container1}>
+          <View >
 
           </View>
         </ImageBackground>
@@ -150,7 +147,6 @@ const styles = StyleSheet.create({
     },
     signup:{
       marginTop: 20,
-      marginBottom: 10,
       fontSize: 20,
       fontFamily: 'Montserrat',
       color: "#fff",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFonts } from 'expo-font';
-import {FlatList, ListCategories, TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, StatusBar, Text, View, ScrollView, Button, SafeAreaView, Dimensions } from 'react-native';
+import {FlatList, TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, StatusBar, Text, View, ScrollView, Button, SafeAreaView, Dimensions } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import places from '../const/places.js';
 const {width} = Dimensions.get('screen');

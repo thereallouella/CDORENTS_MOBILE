@@ -53,27 +53,8 @@ export default function Login({ navigation }) {
         <Text style={styles.forget} onPress={() => navigation.navigate('ForgetPass')}>Forgot Password?</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.btn, styles.shadowProp2]} onPress={() => {
-                      navigation.navigate('Profile');
-                /*axios.get(`/auth/users/`, data).then(response => {
-                    console.log(response.data);
-                    if (data[0].Message === 'Logged In Successfully') {
-                      Alert.alert("Successful", "Successfully logged in")
-                      dispatch(mutateUser({ 
-                        first_name: data[0].user.first_name,
-                        last_name: data[0].user.last_name,
-                        email: data[0].user.email,
-                        id: data[0].user.id
-                    })) 
-                      navigation.navigate('Profile');
-                    } else {
-                      setErrors({ general: data[0].Message });
-                      Alert.alert("Error", "Incorrect email or password")
-                    }
-                    
-                }).catch(error => {
-                    console.log(error.response.data);
-                })*/
-                
+                      // navigation.navigate('Profile');
+
             }}>
       <Text style={styles.login}> LOG-IN</Text>
       </TouchableOpacity>
@@ -168,7 +149,6 @@ const styles = StyleSheet.create({
   },
   signup:{
     marginTop: 20,
-    marginBottom: 10,
     fontSize: 20,
     fontFamily: 'Montserrat',
     color: "#fff",

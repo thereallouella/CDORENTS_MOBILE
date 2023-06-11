@@ -1,7 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
-import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { TouchableOpacity, ImageBackground, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Owner({ navigation, route }){

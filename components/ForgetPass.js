@@ -1,8 +1,6 @@
 import React from 'react';
 import logof from '../assets/logof.png';
 import { StatusBar } from 'expo-status-bar';
-import { FontAwesome } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
 import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 

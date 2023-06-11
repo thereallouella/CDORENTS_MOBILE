@@ -1,6 +1,5 @@
 import React from 'react';
-import { useFonts } from 'expo-font';
-import { ListCategories, TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, StatusBar, Text, View, ScrollView, Button, SafeAreaView } from 'react-native';
+import {  TextInput, StyleSheet, StatusBar, Text, View, ScrollView, SafeAreaView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Owner(){

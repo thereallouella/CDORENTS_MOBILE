@@ -1,12 +1,9 @@
 import React from 'react';
-import logo from '../assets/logo.png';
 import { StatusBar } from 'expo-status-bar';
 import { FontAwesome } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
-import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, View, } from 'react-native';
+import { TouchableOpacity, TextInput, ImageBackground, StyleSheet, Text, View, } from 'react-native';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-//import axios from 'axios';
 import axios from '../plugins/axios';
 
 
@@ -230,7 +227,6 @@ const styles = StyleSheet.create({
     },
     signup:{
         marginTop: 20,
-        marginBottom: 10,
         fontSize: 20,
         fontFamily: 'Montserrat',
         color: "#fff",
