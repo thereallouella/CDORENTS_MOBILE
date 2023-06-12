@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { FontAwesome } from '@expo/vector-icons';
-import { TouchableOpacity, TextInput, ImageBackground, StyleSheet, Text, View, } from 'react-native';
+import {TouchableOpacity, TextInput, ImageBackground, StyleSheet, Text, View, ActivityIndicator,} from 'react-native';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from '../plugins/axios';
@@ -26,7 +26,8 @@ export default function Registration({ navigation }){
         
     })
 
-    const [error, setError] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [domain, setDomain] = useState('http://192.168.88.110:8000/api/v1/');
 
@@ -63,7 +64,7 @@ export default function Registration({ navigation }){
                 onChangeText= {(email) => {
                     onChangeData({
                         ...data,
-                        "email": email
+                        "email": email.toLowerCase()
                     })
                 }}          
             />
@@ -101,28 +102,36 @@ export default function Registration({ navigation }){
                     })
                 }}           
             />
-            <TouchableOpacity style={[styles.btn, styles.shadowProp2]} onPress={() => {
-                let convertedData = JSON.stringify(data);
-                axios.post(domain + 'users/', convertedData)
-                    .then(function (response) {
-                            console.log(response);
-                        }
-                    )
-                    .catch(function (error) {
-                        /*extract the response data key & value and set to alert*/
-                        let errorData = error.response.data;
-                        let errorDataKeys = Object.keys(errorData);
-                        let errorDataValues = Object.values(errorData);
-                        let errorAlert = '';
-                        for (let i = 0; i < errorDataKeys.length; i++) {
-                            errorAlert += errorDataKeys[i] + ': ' + errorDataValues[i] + '\n';
-                        }
-                        alert(errorAlert);
-                        }
-                    );
-            }}>
-                <Text style={styles.login}>REGISTER</Text>
-            </TouchableOpacity>
+                {isLoading ? <ActivityIndicator/> :
+                    <TouchableOpacity style={[styles.btn, styles.shadowProp2]} onPress={() => {
+                        setIsLoading(true);
+                        let convertedData = JSON.stringify(data);
+                        axios.post(domain + 'users/', convertedData)
+                            .then(function (response) {
+                                    setIsLoading(false);
+                                    /*if status is 201 clear the input and back to login after message the user should the email*/
+                                    alert('Successfully Registered! Please check your email to verify your account.');
+                                    navigation.replace('Login');
+
+                                }
+                            )
+                            .catch(function (error) {
+                                    /*extract the response data key & value and set to alert*/
+                                    let errorData = error.response.data;
+                                    let errorDataKeys = Object.keys(errorData);
+                                    let errorDataValues = Object.values(errorData);
+                                    let errorAlert = '';
+                                    for (let i = 0; i < errorDataKeys.length; i++) {
+                                        errorAlert += errorDataKeys[i] + ': ' + errorDataValues[i] + '\n';
+                                    }
+                                    setIsLoading(false);
+                                    alert(errorAlert);
+                                }
+                            );
+                    }}>
+                        <Text style={styles.login}>REGISTER</Text>
+                    </TouchableOpacity>
+                }
             <Text style={styles.or}>
                 ______________ OR _____________
             </Text>
