@@ -1,14 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import logof from '../assets/logof.png';
 import { StatusBar } from 'expo-status-bar';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
-import { mutateUser } from './slice/userSlice';
-import axios from '../plugins/axios';
 
 
 export default function Login({ navigation }) {
@@ -17,6 +14,13 @@ export default function Login({ navigation }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+    const [error, setError] = useState(null);
+
+  /*domain: http://127.0.0.1:8000/api/v1*/
+  const [domain, setDomain] = useState('http://192.168.88.110:8000/api/v1');
+
+
 
   const [fontsLoaded] = useFonts({
     JosefinSans : require("../assets/fonts/static/JosefinSans-Regular.ttf"),
@@ -54,8 +58,40 @@ export default function Login({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity style={[styles.btn, styles.shadowProp2]} onPress={() => {
                       // navigation.navigate('Profile');
+            // test the domain
+        console.log(domain+'/jwt/create/');
+        console.log(email);
+        console.log(password);
+        let body = JSON.stringify({
+            email: email.toLowerCase(),
+            password: password
+        });
 
-            }}>
+        fetch(`${domain}/jwt/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body:body
+        })
+            .then(res => {
+              if (res.ok) {
+                return res.json()
+              } else {
+                setError("Invalid Credentials")
+                alert("Invalid Credentials")
+                throw res.json()
+              }
+            })
+            .then(json => {
+              console.log(json.access)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+
+
+      }}>
       <Text style={styles.login}> LOG-IN</Text>
       </TouchableOpacity>
 
