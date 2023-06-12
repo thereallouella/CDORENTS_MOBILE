@@ -13,10 +13,6 @@ import axios from '../plugins/axios';
 export default function Registration({ navigation }){
     const image =require("../assets/bgf.png");
 
-    /*const [email, setEmail] = useState(null);
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);*/
-    const [confirmpass, setConfirmPass] = useState(null);
 
     //according to sir darios method
 
@@ -29,6 +25,11 @@ export default function Registration({ navigation }){
         "re_password": ""
         
     })
+
+    const [error, setError] = useState(null);
+
+    const [domain, setDomain] = useState('http://192.168.88.110:8000/api/v1/');
+
     return(
         <ImageBackground source={image} style={styles.container}>
             <KeyboardAwareScrollView>
@@ -101,13 +102,24 @@ export default function Registration({ navigation }){
                 }}           
             />
             <TouchableOpacity style={[styles.btn, styles.shadowProp2]} onPress={() => {
-                axios.post(`/auth/users/`, data).then(response => {
-                    console.log(response.data);
-                    navigation.navigate('Login');
-                }).catch(error => {
-                    console.log(error.response.data);
-                })
-                
+                let convertedData = JSON.stringify(data);
+                axios.post(domain + 'users/', convertedData)
+                    .then(function (response) {
+                            console.log(response);
+                        }
+                    )
+                    .catch(function (error) {
+                        /*extract the response data key & value and set to alert*/
+                        let errorData = error.response.data;
+                        let errorDataKeys = Object.keys(errorData);
+                        let errorDataValues = Object.values(errorData);
+                        let errorAlert = '';
+                        for (let i = 0; i < errorDataKeys.length; i++) {
+                            errorAlert += errorDataKeys[i] + ': ' + errorDataValues[i] + '\n';
+                        }
+                        alert(errorAlert);
+                        }
+                    );
             }}>
                 <Text style={styles.login}>REGISTER</Text>
             </TouchableOpacity>

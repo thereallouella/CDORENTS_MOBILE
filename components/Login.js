@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from "axios";
 
 
 export default function Login({ navigation }) {
@@ -15,7 +16,6 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-    const [error, setError] = useState(null);
 
   /*domain: http://127.0.0.1:8000/api/v1*/
   const [domain, setDomain] = useState('http://192.168.88.110:8000/api/v1');
@@ -67,29 +67,25 @@ export default function Login({ navigation }) {
             password: password
         });
 
-        fetch(`${domain}/jwt/create`, {
-          method: 'POST',
+        axios.post(domain+'/jwt/create/', body, {
           headers: {
-            'Content-Type': 'application/json'
-          },
-          body:body
-        })
-            .then(res => {
-              if (res.ok) {
-                return res.json()
-              } else {
-                setError("Invalid Credentials")
-                alert("Invalid Credentials")
-                throw res.json()
-              }
-            })
-            .then(json => {
-              console.log(json.access)
-            })
-            .catch(error => {
-              console.log(error)
-            })
-
+            'Content-Type': 'application/json',
+          }
+        }).then((response) => {
+          console.log(response.data.access);
+          // dispatch({type: 'SET_TOKEN', token: response.data.access});
+          navigation.navigate('Dashboard');
+        }).catch((error) => {
+              console.log(error.response.data);
+              /*extract the response data key & value and set to alert*/
+                let errorData = error.response.data;
+                let errorString = '';
+                for (const key in errorData) {
+                    errorString += `${key}: ${errorData[key]}\n`;
+                }
+                alert(errorString);
+            }
+        );
 
       }}>
       <Text style={styles.login}> LOG-IN</Text>
