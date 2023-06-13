@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import {FlatList, TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, StatusBar, Text, View, ScrollView, Button, SafeAreaView, Dimensions } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import places from '../const/places.js';
+import DropdownMenu from "./wigets/DropdownMenu";
 const {width} = Dimensions.get('screen');
 
 export default function Owner({ navigation }){
@@ -13,91 +14,94 @@ export default function Owner({ navigation }){
   ];
   const ListCategories =() => {
     return (
-      <View style={styles.categoryContainer}>
-        {categoryIcons.map((icon, index)=> (
-          <View key={index} style={styles.iconContainer}>{icon}</View>
-        ))}
-      </View>
+        <View style={styles.categoryContainer}>
+          {categoryIcons.map((icon, index)=> (
+              <View key={index} style={styles.iconContainer}>{icon}</View>
+          ))}
+        </View>
     );
   };
 
   const Card = ({place}) => {
     return (
-      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
-        <ImageBackground style={styles.cardImage} source={place.image}>
-          <Text style={styles.caption}>{place.name}</Text>
-          <View style={styles.locationPhoto}>
-            <View style={{flexDirection: 'row'}}>
-              <MaterialCommunityIcons name="map-marker" size={20} color={'#fff'} />
-              <Text style={{marginLeft: 5, color: '#fff'}}>{place.location}</Text>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Details',place)}>
+          <ImageBackground style={styles.cardImage} source={place.image}>
+            <Text style={styles.caption}>{place.name}</Text>
+            <View style={styles.locationPhoto}>
+              <View style={{flexDirection: 'row'}}>
+                <MaterialCommunityIcons name="map-marker" size={20} color={'#fff'} />
+                <Text style={{marginLeft: 5, color: '#fff'}}>{place.location}</Text>
+              </View>
             </View>
-          </View>
-        </ImageBackground>
-      </TouchableOpacity>
+          </ImageBackground>
+        </TouchableOpacity>
     );
   };
   const Recommendations = ({place}) => {
-    return <ImageBackground 
-      style={styles.rmCardImage}
-      source={place.image}>
-        <Text style={styles.recommendCard}>{place.name}</Text>
-        <View style={styles.recommendCard1}>
-          <View style={{width: '100%', flexDirection: 'row', marginTop: 10}}>
-            <View style={{flexDirection: 'row'}}>
-              <MaterialCommunityIcons name= "map-marker" size={22} color={'#fff'}/>
-              <Text style={{flexDirection: 'row', color: '#fff'}}>{place.location}</Text>
+    return <ImageBackground
+        style={styles.rmCardImage}
+        source={place.image}>
+      <Text style={styles.recommendCard}>{place.name}</Text>
+      <View style={styles.recommendCard1}>
+        <View style={{width: '100%', flexDirection: 'row', marginTop: 10}}>
+          <View style={{flexDirection: 'row'}}>
+            <MaterialCommunityIcons name= "map-marker" size={22} color={'#fff'}/>
+            <Text style={{flexDirection: 'row', color: '#fff'}}>{place.location}</Text>
+          </View>
+        </View>
+        <Text style={{color: '#fff', fontSize: 13, fontFamily: 'Montserrat'}}>{place.details}</Text>
+      </View>
+    </ImageBackground>
+  }
+  return(
+      <SafeAreaView style={{flex:1, backgroundColor: '#fff'}}>
+        <StatusBar translucent={false} backgroundColor={'#249EA0'}/>
+
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.scroll}>
+            <View>
+              <Text style={styles.headerTitle}>New Listings!</Text>
+              <Text style={styles.headerTitle1}>CDO's Finest Accomodations</Text>
+              <View style={styles.searchInput}>
+                <MaterialCommunityIcons name="map-marker" size={28}/>
+                <TextInput placeholder='Search Location' style={styles.searchBar}/>
+              </View>
             </View>
           </View>
-          <Text style={{color: '#fff', fontSize: 13, fontFamily: 'Montserrat'}}>{place.details}</Text>
+          <ListCategories />
+          <Text style={styles.sectionTitle}>Recent Listings</Text>
+          <View>
+            <FlatList
+                contentContainerStyle={{paddingLeft:20}}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={places}
+                renderItem={({item}) => <Card place={item} />}
+            />
+            <Text style={styles.sectionTitle}>Recommendations</Text>
+            <FlatList
+                snapToInterval={width - 20}
+                contentContainerStyle={{paddingLeft:20, paddingBottom: 20}}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                data={places}
+                renderItem={({item}) => <Recommendations place={item}/>}
+            />
+          </View>
+        </ScrollView>
+        <View style={styles.header}>
+          <MaterialCommunityIcons name= "bookmark-multiple" size={28} color={'#fff'} onPress={() => navigation.navigate('Reservation')}/>
+          <DropdownMenu
+              navigation={navigation}
+          />
         </View>
-      </ImageBackground>
-  }
-    return(
-        <SafeAreaView style={{flex:1, backgroundColor: '#fff'}}>
-          <StatusBar translucent={false} backgroundColor={'#249EA0'}/>
-            <View style={styles.header}>
-              <MaterialCommunityIcons name= "bookmark-multiple" size={28} color={'#fff'} onPress={() => navigation.navigate('Reservation')}/>
-              <MaterialCommunityIcons name= "account-circle" size={35} color={'#fff'} onPress={() => navigation.navigate('Profile')}/>
-            </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.scroll}>
-                <View>
-                <Text style={styles.headerTitle}>New Listings!</Text>
-                <Text style={styles.headerTitle1}>CDO's Finest Accomodations</Text>
-                <View style={styles.searchInput}>
-                  <MaterialCommunityIcons name="map-marker" size={28}/>
-                  <TextInput placeholder='Search Location' style={styles.searchBar}/>
-                </View>
-                </View>
-              </View>
-              <ListCategories />
-              <Text style={styles.sectionTitle}>Recent Listings</Text>
-              <View>
-                <FlatList
-                  contentContainerStyle={{paddingLeft:20}}
-                  horizontal
-                  showsHorizontalScrollIndicator={false} 
-                  data={places}
-                  renderItem={({item}) => <Card place={item} />}
-                />
-                <Text style={styles.sectionTitle}>Recommendations</Text>
-                <FlatList
-                  snapToInterval={width - 20}
-                  contentContainerStyle={{paddingLeft:20, paddingBottom: 20}}
-                  showsHorizontalScrollIndicator={false}
-                  horizontal
-                  data={places}
-                  renderItem={({item}) => <Recommendations place={item}/>} 
-                />
-              </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
-  };
+      </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   header:{
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -105,8 +109,9 @@ const styles = StyleSheet.create({
   },
   scroll:{
     backgroundColor: '#249EA0',
-     height: 120,
-     paddingHorizontal: 20,
+    height: 120,
+    paddingHorizontal: 20,
+
   },
   headerTitle:{
     color: '#fff',
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eef2e6',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius:10, 
+    borderRadius:10,
   },
   sectionTitle: {
     marginHorizontal: 20,
@@ -194,5 +199,5 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-  },  
+  },
 });

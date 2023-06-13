@@ -72,7 +72,7 @@ export default function Login({ navigation }) {
             'Content-Type': 'application/json',
           }
         }).then((response) => {
-          console.log(response.data.access);
+          // console.log(response.data.access);
           AsyncStorage.setItem('access_token', response.data.access);
 
           navigation.navigate('Dashboard');
