@@ -7,6 +7,7 @@ import { TouchableOpacity, TextInput, Image, ImageBackground, StyleSheet, Text, 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function Login({ navigation }) {
@@ -17,8 +18,7 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
 
 
-  /*domain: http://127.0.0.1:8000/api/v1*/
-  const [domain, setDomain] = useState('http://192.168.88.110:8000/api/v1');
+  const [domain] = useState('http://192.168.88.110:8000/api/v1');
 
 
 
@@ -73,7 +73,8 @@ export default function Login({ navigation }) {
           }
         }).then((response) => {
           console.log(response.data.access);
-          // dispatch({type: 'SET_TOKEN', token: response.data.access});
+          AsyncStorage.setItem('access_token', response.data.access);
+
           navigation.navigate('Dashboard');
         }).catch((error) => {
               console.log(error.response.data);
