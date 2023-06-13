@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -65,7 +65,12 @@ function MainStack({ setIsLoading }) {
             if (accessToken) {
                 // Access token is stored, navigate to the Dashboard
                 // You can replace 'Dashboard' with the appropriate screen name
-                navigation.navigate('Dashboard');
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: 'Dashboard' }] // Replace 'Dashboard' with the appropriate screen name
+                    })
+                );
             } else {
                 // Access token is not stored, navigate to the Login screen
                 navigation.navigate('Login');
